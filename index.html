@@ -227,6 +227,7 @@ function PropDesk() {
   const [hidden, setHidden] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [pub, setPub] = useState({ capital: 0, pnl: 0 });
+  const [showLogin, setShowLogin] = useState(false);
 
   const loadData = async (uid) => {
     if (!sb) return;
@@ -302,13 +303,15 @@ function PropDesk() {
           <div className="pd-tagline">multi-firm account terminal{syncing ? " · saving…" : ""}</div>
         </div>
         <div className="pd-head-actions">
-          {authed && (
+          {authed ? (
             <>
               {!hidden && <button className="pd-ghost" onClick={() => setEditing(newCustom())}><Plus size={15} /> Other firm</button>}
               {!hidden && <button className="pd-add" onClick={() => setEditing(newInstant())}><Plus size={16} strokeWidth={2.5} /> Add account</button>}
               <button className="pd-ghost" onClick={() => setHidden((h) => !h)} title="Hide details"><Lock size={15} /> {hidden ? "Show" : "Hide"}</button>
               <button className="pd-ghost" onClick={signOut} title="Log out"><X size={15} /> Log out</button>
             </>
+          ) : (
+            <button className="pd-loginbtn" onClick={() => setShowLogin(true)}><Lock size={14} /> Log in</button>
           )}
         </div>
       </header>
@@ -323,23 +326,26 @@ function PropDesk() {
           <Stat label="Breached" value={totals.breached} icon={ShieldAlert} color={totals.breached ? "var(--red)" : "var(--dim)"} />
         </section>
       ) : !loading ? (
-        <section className="pd-public">
-          <div className="pd-public-stat">
-            <div className="pd-public-label"><Wallet size={15} /> Capital managed</div>
-            <div className="pd-public-val">{money(pub.capital)}</div>
+        <section className="pd-hero">
+          <div className="pd-hero-eyebrow"><span className="pd-livedot" /> L24 GLOBAL · LIVE PERFORMANCE</div>
+          <div className="pd-hero-grid">
+            <div className="pd-hero-stat">
+              <div className="pd-hero-label"><Wallet size={14} /> Capital Managed</div>
+              <div className="pd-hero-val">{money(pub.capital)}</div>
+            </div>
+            <div className="pd-hero-divider" />
+            <div className="pd-hero-stat">
+              <div className="pd-hero-label">{pub.pnl >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />} Total P&L</div>
+              <div className="pd-hero-val" style={{ color: pub.pnl >= 0 ? "var(--green)" : "var(--red)" }}>{moneyP(pub.pnl)}</div>
+            </div>
           </div>
-          <div className="pd-public-stat">
-            <div className="pd-public-label">{pub.pnl >= 0 ? <TrendingUp size={15} /> : <TrendingDown size={15} />} Total P&L</div>
-            <div className="pd-public-val" style={{ color: pub.pnl >= 0 ? "var(--green)" : "var(--red)" }}>{moneyP(pub.pnl)}</div>
-          </div>
+          <div className="pd-hero-foot">Member access only · <span className="pd-hero-link" onClick={() => setShowLogin(true)}>log in</span></div>
         </section>
       ) : null}
 
       {loading ? (
         <div className="pd-empty">Loading your desk…</div>
-      ) : !authed ? (
-        <AuthGate />
-      ) : hidden ? (
+      ) : !authed ? null : hidden ? (
         <div className="pd-empty">
           <div className="pd-gate-icon" style={{ margin: "0 auto 14px" }}><Lock size={24} /></div>
           <div className="pd-empty-title">Details hidden</div>
@@ -359,6 +365,7 @@ function PropDesk() {
 
       <footer className="pd-foot">Synced to your account across devices. Rules reflect Blue Guardian's published Instant terms; verify against your dashboard. Not financial advice.</footer>
       {editing && <Editor account={editing} onSave={save} onClose={() => setEditing(null)} />}
+      {showLogin && !authed && <LoginModal onClose={() => setShowLogin(false)} />}
     </div>
   );
 }
@@ -372,49 +379,38 @@ function Stat({ label, value, icon: Icon, color }) {
   );
 }
 
-function AuthGate() {
-  const [mode, setMode] = useState("in"); // "in" | "up"
+function LoginModal({ onClose }) {
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
-  const [msg, setMsg] = useState("");
 
   const submit = async () => {
-    setErr(""); setMsg("");
-    if (!sb) { setErr("Cloud not available in preview — deploy to use login."); return; }
+    setErr("");
+    if (!sb) { setErr("Cloud not available in preview — open the deployed site."); return; }
     if (!email || !pw) { setErr("Enter your email and password"); return; }
     setBusy(true);
     try {
-      if (mode === "in") {
-        const { error } = await sb.auth.signInWithPassword({ email, password: pw });
-        if (error) setErr(error.message);
-      } else {
-        const { error } = await sb.auth.signUp({ email, password: pw });
-        if (error) setErr(error.message);
-        else setMsg("Account created. If email confirmation is on, check your inbox; otherwise you're in.");
-      }
+      const { error } = await sb.auth.signInWithPassword({ email, password: pw });
+      if (error) setErr("Incorrect email or password"); else onClose();
     } catch (e) { setErr("Something went wrong. Try again."); }
     setBusy(false);
   };
 
   return (
-    <div className="pd-gate">
-      <div className="pd-gate-card">
-        <div className="pd-gate-icon"><Lock size={26} /></div>
-        <div className="pd-gate-title">{mode === "in" ? "Log in" : "Create your account"}</div>
-        <div className="pd-gate-sub">{mode === "in" ? "Your accounts sync securely across your devices." : "Set up a login to start syncing your dashboard."}</div>
+    <div className="pd-modal-bg" onClick={onClose}>
+      <div className="pd-login" onClick={(e) => e.stopPropagation()}>
+        <div className="pd-login-head">
+          <span><Lock size={15} /> Log in</span>
+          <button onClick={onClose}><X size={18} /></button>
+        </div>
         <input className="pd-gate-input" style={{ letterSpacing: 0, textAlign: "left" }} type="email" value={email} autoFocus placeholder="Email"
           onChange={(e) => { setEmail(e.target.value); setErr(""); }} />
         <input className="pd-gate-input" style={{ letterSpacing: 0, textAlign: "left" }} type="password" value={pw} placeholder="Password"
           onChange={(e) => { setPw(e.target.value); setErr(""); }} onKeyDown={(e) => e.key === "Enter" && submit()} />
         {err && <div className="pd-gate-err"><AlertTriangle size={13} /> {err}</div>}
-        {msg && <div className="pd-gate-msg"><CheckCircle2 size={13} /> {msg}</div>}
-        <button className="pd-add pd-gate-btn" onClick={submit} disabled={busy}>{busy ? "Please wait…" : mode === "in" ? "Log in" : "Sign up"}</button>
-        <div className="pd-gate-switch" onClick={() => { setMode(mode === "in" ? "up" : "in"); setErr(""); setMsg(""); }}>
-          {mode === "in" ? "Need an account? Sign up" : "Already have an account? Log in"}
-        </div>
-        <div className="pd-gate-note">Protected by real server-side login. Only you can see your accounts.</div>
+        <button className="pd-add pd-gate-btn" onClick={submit} disabled={busy}>{busy ? "Please wait…" : "Log in"}</button>
+        <div className="pd-gate-note">Access is invite-only. Logins are created by an administrator.</div>
       </div>
     </div>
   );
@@ -852,11 +848,27 @@ const CSS = `
 .pd-ghost{background:transparent;color:var(--mid);border:1px solid var(--line);font-family:'IBM Plex Sans';font-size:14px;padding:10px 16px;border-radius:9px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
 .pd-ghost:hover{border-color:var(--dim);color:var(--ink);}
 .pd-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:26px;}
-.pd-public{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:10px 0 30px;}
-.pd-public-stat{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:16px;padding:26px 24px;text-align:center;}
-.pd-public-label{display:flex;align-items:center;justify-content:center;gap:8px;font-family:'IBM Plex Mono';font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);margin-bottom:12px;}
-.pd-public-val{font-family:'IBM Plex Mono';font-weight:600;font-size:clamp(28px,6vw,44px);letter-spacing:-1px;}
-@media(max-width:560px){.pd-public{grid-template-columns:1fr;gap:12px;}.pd-public-stat{padding:22px 20px;}}
+.pd-public{display:none;}
+.pd-loginbtn{display:inline-flex;align-items:center;gap:7px;background:var(--cyan);color:#161600;border:none;font-weight:600;font-family:'IBM Plex Sans';font-size:13px;padding:9px 16px;border-radius:9px;cursor:pointer;transition:.15s;}
+.pd-loginbtn:hover{filter:brightness(1.1);transform:translateY(-1px);}
+.pd-hero{margin:30px 0 40px;padding:40px 28px;background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:20px;text-align:center;position:relative;overflow:hidden;}
+.pd-hero:before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:120%;height:80%;background:radial-gradient(ellipse at center, rgba(255,255,11,.06), transparent 70%);pointer-events:none;}
+.pd-hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:3px;color:var(--mid);margin-bottom:28px;}
+.pd-livedot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(63,185,80,.5);animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,185,80,.5);}70%{box-shadow:0 0 0 8px rgba(63,185,80,0);}100%{box-shadow:0 0 0 0 rgba(63,185,80,0);}}
+.pd-hero-grid{display:flex;align-items:center;justify-content:center;gap:clamp(20px,6vw,70px);flex-wrap:wrap;position:relative;}
+.pd-hero-stat{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.pd-hero-label{display:flex;align-items:center;gap:7px;font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);}
+.pd-hero-val{font-family:'IBM Plex Mono';font-weight:600;font-size:clamp(34px,8vw,58px);letter-spacing:-2px;line-height:1;}
+.pd-hero-divider{width:1px;align-self:stretch;background:var(--line);}
+.pd-hero-foot{margin-top:30px;font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);position:relative;}
+.pd-hero-link{color:var(--cyan);cursor:pointer;text-decoration:underline;}
+.pd-login{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:380px;padding:24px;animation:rise .25s ease both;}
+.pd-login-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;}
+.pd-login-head span{display:inline-flex;align-items:center;gap:8px;}
+.pd-login-head button{background:none;border:none;color:var(--dim);cursor:pointer;}
+.pd-login-head button:hover{color:var(--ink);}
+@media(max-width:560px){.pd-hero-divider{display:none;}.pd-hero-grid{gap:26px;}}
 .pd-stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;}
 .pd-stat-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .pd-stat-label{font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;font-family:'IBM Plex Mono';}
