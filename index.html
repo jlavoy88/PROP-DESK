@@ -58,7 +58,7 @@ const sb = (typeof window !== "undefined" && window.supabase) ? window.supabase.
 const LOGO_SRC = "data:image/png;base64,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";
 
 /* ============================ FIRM PROFILES ============================ */
-const SIZES = [5000, 10000, 25000, 50000, 100000, 150000, 200000, 300000, 400000];
+const SIZES = [5000, 10000, 25000, 50000, 100000, 150000, 200000, 250000, 300000, 400000];
 
 const PROFILES = {
   "bg-instant": {
@@ -76,6 +76,22 @@ const PROFILES = {
       "A day counts toward the minimum only if you close ≥0.5% profit.",
       "No news trading ±5 min. Hedging, martingale, no-SL allowed.",
       "Min withdrawal $500 (Rise) / $100 (crypto); under $2,000 is crypto-only.",
+    ],
+  },
+  "aqua-pap": {
+    id: "aqua-pap", firm: "AquaFunded", model: "Pay-After-Pass (One-Step)",
+    market: "Forex", kind: "aqua", platform: "TradeLocker", split: 100,
+    dailyLossPct: 3, maxTrailingPct: 6, floatingLimitPct: 2, evalTargetPct: 3,
+    minTradingDays: 5, qualifyingDayPct: 0.5, consistencyPct: () => 15,
+    payoutCap: (size) => (size >= 200000 ? 10000 : null),
+    payoutCapCount: 2, payoutCycleDays: 14,
+    notes: [
+      "Trailing 6% drawdown — follows your peak and NEVER locks at initial.",
+      "After a payout, the entire profit is withdrawn: balance AND trailing reset to your initial balance.",
+      "Floating loss past −2% of starting balance = permanent hard breach.",
+      "Daily loss limit 3% of initial, reset 00:00 UTC.",
+      "Funded: 15% consistency rule, min 5 days (≥0.5% each), payouts every 14 days.",
+      "No trading ±5 min around high-impact news; $100 min withdrawal via Rise.",
     ],
   },
   "custom": { id: "custom", firm: "Custom", model: "Generic / other firm", kind: "custom", platform: "", split: 80 },
@@ -196,13 +212,126 @@ function analyzeCustom(a) {
 
 const analyze = (a) => {
   const p = PROFILES[a.profileId] || PROFILES.custom;
-  return a.profileId === "bg-instant" ? analyzeInstant(a, p) : analyzeCustom(a);
+  if (a.profileId === "bg-instant") return analyzeInstant(a, p);
+  if (a.profileId === "aqua-pap") return analyzeAqua(a, p);
+  return analyzeCustom(a);
 };
+
+// Cumulative realized performance across all accounts, as % of total capital.
+// Sums each account's logged daily P&L over the calendar; payouts/withdrawals don't reduce it.
+function buildSeries(accounts) {
+  const byDate = {};
+  let totalCap = 0;
+  (accounts || []).forEach((a) => {
+    totalCap += a.accountSize || 0;
+    (a.dayLog || []).forEach((d) => {
+      if (!d.date) return;
+      byDate[d.date] = (byDate[d.date] || 0) + (Number(d.amount) || 0);
+    });
+  });
+  const dates = Object.keys(byDate).sort();
+  let cum = 0;
+  return dates.map((date) => {
+    cum += byDate[date];
+    return { d: date, p: totalCap ? Math.round((cum / totalCap) * 10000) / 100 : 0 };
+  });
+}
+
+function analyzeAqua(a, p) {
+  const init = a.accountSize;
+  const days = (a.dayLog || []).slice();
+  const payouts = (a.payouts || []).slice();
+  const events = [
+    ...days.map((d) => ({ date: d.date, type: "day", amount: d.amount })),
+    ...payouts.map((p2) => ({ date: p2.date, type: "payout" })),
+  ].sort((x, y) => (x.date < y.date ? -1 : x.date > y.date ? 1 : x.type === "day" ? -1 : 1));
+
+  // Process timeline. A payout withdraws ALL profit and resets balance + trailing peak to initial.
+  let bal = init, peak = init;
+  const payoutLog = [];
+  events.forEach((e) => {
+    if (e.type === "day") { bal += e.amount; if (bal > peak) peak = bal; }
+    else { payoutLog.push({ date: e.date, amount: Math.max(0, bal - init) }); bal = init; peak = init; }
+  });
+  const currentBalance = bal;
+  const highestBalance = peak;
+  const pnl = currentBalance - init;
+  const pnlPct = init ? (pnl / init) * 100 : 0;
+
+  // Trailing 6% that never locks — always 6% below the running peak (peak resets on payout)
+  const floor = peak - init * (p.maxTrailingPct / 100);
+  const cushion = currentBalance - floor;
+  const cushionPct = init ? clamp((cushion / init) * 100, 0, 100) : 0;
+  const ddBreached = currentBalance <= floor;
+  const floatingBreach = !!a.floatingBreach;
+  const breached = ddBreached || floatingBreach;
+
+  const dailyLoss = init * (p.dailyLossPct / 100);
+  const floatingLimit = init * (p.floatingLimitPct / 100);
+
+  // Current payout period = days after the most recent payout
+  const lastPayoutDate = payouts.length ? payouts.map((x) => x.date).sort().slice(-1)[0] : null;
+  const periodDays = lastPayoutDate ? days.filter((d) => d.date > lastPayoutDate) : days;
+
+  const qualDayProfit = init * (p.qualifyingDayPct / 100);
+  const daysDone = periodDays.filter((d) => d.amount >= qualDayProfit).length;
+  const daysMet = daysDone >= p.minTradingDays;
+
+  const periodProfit = periodDays.reduce((s, d) => s + d.amount, 0);
+  const bigDay = periodDays.reduce((m, d) => Math.max(m, d.amount), 0);
+  const consPct = p.consistencyPct(init);
+  const maxDay = periodProfit > 0 ? (periodProfit * consPct) / 100 : 0;
+  const consChecked = periodDays.length > 0 && periodProfit > 0;
+  const consOK = !consChecked || bigDay <= maxDay;
+
+  // 14-day cycle: 14 days from the first trade of the current period
+  const periodDates = periodDays.map((d) => d.date).sort();
+  const firstPeriodDate = periodDates.length ? periodDates[0] : null;
+  let timeMet = false, eligibleDate = null;
+  if (firstPeriodDate) {
+    const d0 = new Date(firstPeriodDate + "T00:00:00");
+    d0.setDate(d0.getDate() + p.payoutCycleDays);
+    eligibleDate = d0.toISOString().slice(0, 10);
+    timeMet = todayKey() >= eligibleDate;
+  }
+
+  const cap = p.payoutCap(init);
+  const taken = payouts.length;
+  const cappedLeft = Math.max(0, p.payoutCapCount - taken);
+  const activeCap = cap && cappedLeft > 0 ? cap : null;
+
+  const withdrawable = Math.max(0, currentBalance - init);
+  const payable = activeCap ? Math.min(withdrawable, activeCap) : withdrawable;
+  const yourShare = payable * (p.split / 100);
+
+  const reasons = [];
+  if (ddBreached) reasons.push("Below trailing drawdown floor — breached");
+  if (floatingBreach) reasons.push("Hit −2% floating loss — account closed");
+  if (!breached && withdrawable <= 0) reasons.push("No profit above initial to withdraw");
+  if (!breached && withdrawable > 0 && !daysMet) reasons.push(`Need ${p.minTradingDays - daysDone} more qualifying day(s)`);
+  if (!breached && !consOK) reasons.push(`Best day exceeds ${consPct}% — trim to ${money(maxDay)}`);
+  if (!breached && withdrawable > 0 && daysMet && consOK && !timeMet && eligibleDate) reasons.push(`Payout window opens ${prettyDate(eligibleDate)}`);
+
+  const eligible = !breached && withdrawable > 0 && daysMet && consOK && timeMet;
+  let status = "FUNDED";
+  if (breached) status = "BREACHED";
+  else if (eligible) status = "PAYOUT READY";
+
+  return { kind: "aqua", currentBalance, highestBalance, pnl, pnlPct, floor, locked: false, cushion, cushionPct, ddBreached,
+    dailyLoss, floatingLimit, floatingBreach, effSplit: p.split, qualDayProfit, daysDone, daysMet, minDays: p.minTradingDays,
+    consPct, maxDay, consChecked, consOK, bigDay, periodProfit, withdrawable, activeCap, cappedLeft, payoutsTaken: taken,
+    eligibleDate, timeMet, yourShare, eligible, status, reasons, payoutLog };
+}
 
 const newInstant = () => ({
   id: uid(), profileId: "bg-instant", nickname: "",
   accountSize: 400000, platform: "TradeLocker",
   guardianBreaches: 0, dayLog: [], payouts: [],
+});
+const newAqua = () => ({
+  id: uid(), profileId: "aqua-pap", nickname: "",
+  accountSize: 250000, platform: "TradeLocker",
+  floatingBreach: false, dayLog: [], payouts: [],
 });
 const newCustom = () => ({
   id: uid(), profileId: "custom", firm: "", nickname: "", phase: "Funded",
@@ -226,8 +355,9 @@ function PropDesk() {
   const [session, setSession] = useState(null);
   const [hidden, setHidden] = useState(false);
   const [syncing, setSyncing] = useState(false);
-  const [pub, setPub] = useState({ capital: 0, pnl: 0 });
+  const [pub, setPub] = useState({ capital: 0, pnl: 0, series: [] });
   const [showLogin, setShowLogin] = useState(false);
+  const [adding, setAdding] = useState(false);
 
   const loadData = async (uid) => {
     if (!sb) return;
@@ -239,8 +369,8 @@ function PropDesk() {
   const loadPublic = async () => {
     if (!sb) return;
     try {
-      const { data } = await sb.from("public_summary").select("capital,pnl").eq("id", 1).maybeSingle();
-      if (data) setPub({ capital: Number(data.capital) || 0, pnl: Number(data.pnl) || 0 });
+      const { data } = await sb.from("public_summary").select("capital,pnl,series").eq("id", 1).maybeSingle();
+      if (data) setPub({ capital: Number(data.capital) || 0, pnl: Number(data.pnl) || 0, series: Array.isArray(data.series) ? data.series : [] });
     } catch (e) {}
   };
 
@@ -265,10 +395,11 @@ function PropDesk() {
     setSyncing(true);
     const capital = next.reduce((s, a) => s + a.accountSize, 0);
     const pnl = next.reduce((s, a) => s + analyze(a).pnl, 0);
-    setPub({ capital, pnl });
+    const series = buildSeries(next);
+    setPub({ capital, pnl, series });
     try {
       await sb.from("user_data").upsert({ user_id: session.user.id, accounts: next, updated_at: new Date().toISOString() });
-      await sb.from("public_summary").upsert({ id: 1, capital, pnl, updated_at: new Date().toISOString() });
+      await sb.from("public_summary").upsert({ id: 1, capital, pnl, series, updated_at: new Date().toISOString() });
     } catch (e) {}
     setSyncing(false);
   };
@@ -305,8 +436,7 @@ function PropDesk() {
         <div className="pd-head-actions">
           {authed ? (
             <>
-              {!hidden && <button className="pd-ghost" onClick={() => setEditing(newCustom())}><Plus size={15} /> Other firm</button>}
-              {!hidden && <button className="pd-add" onClick={() => setEditing(newInstant())}><Plus size={16} strokeWidth={2.5} /> Add account</button>}
+              {!hidden && <button className="pd-add" onClick={() => setAdding(true)}><Plus size={16} strokeWidth={2.5} /> Add account</button>}
               <button className="pd-ghost" onClick={() => setHidden((h) => !h)} title="Hide details"><Lock size={15} /> {hidden ? "Show" : "Hide"}</button>
               <button className="pd-ghost" onClick={signOut} title="Log out"><X size={15} /> Log out</button>
             </>
@@ -340,6 +470,7 @@ function PropDesk() {
             </div>
           </div>
           <div className="pd-hero-foot">Member access only · <span className="pd-hero-link" onClick={() => setShowLogin(true)}>log in</span></div>
+          <PerfChart series={pub.series} />
         </section>
       ) : null}
 
@@ -354,8 +485,8 @@ function PropDesk() {
       ) : accounts.length === 0 ? (
         <div className="pd-empty">
           <div className="pd-empty-title">No accounts yet</div>
-          <p>Add your Blue Guardian Instant account — its rules are already built in. You just enter your live numbers.</p>
-          <button className="pd-add" onClick={() => setEditing(newInstant())}><Plus size={16} strokeWidth={2.5} /> Add Blue Guardian account</button>
+          <p>Add a prop-firm account to start tracking. Blue Guardian and AquaFunded have their rules built in — you just enter your live numbers.</p>
+          <button className="pd-add" onClick={() => setAdding(true)}><Plus size={16} strokeWidth={2.5} /> Add account</button>
         </div>
       ) : (
         <section className="pd-grid">
@@ -363,8 +494,9 @@ function PropDesk() {
         </section>
       )}
 
-      <footer className="pd-foot">Synced to your account across devices. Rules reflect Blue Guardian's published Instant terms; verify against your dashboard. Not financial advice.</footer>
+      <footer className="pd-foot">Synced to your account across devices. Firm rules reflect each firm's published terms; always verify against your own dashboard. Not financial advice.</footer>
       {editing && <Editor account={editing} onSave={save} onClose={() => setEditing(null)} />}
+      {adding && <AddPicker onPick={(acc) => { setAdding(false); setEditing(acc); }} onClose={() => setAdding(false)} />}
       {showLogin && !authed && <LoginModal onClose={() => setShowLogin(false)} />}
     </div>
   );
@@ -375,6 +507,45 @@ function Stat({ label, value, icon: Icon, color }) {
     <div className="pd-stat">
       <div className="pd-stat-top"><span className="pd-stat-label">{label}</span><Icon size={15} style={{ color: color || "var(--dim)" }} /></div>
       <div className="pd-stat-val" style={{ color: color || "var(--ink)" }}>{value}</div>
+    </div>
+  );
+}
+
+function PerfChart({ series }) {
+  if (!series || series.length < 2) {
+    return <div className="pd-chart-empty"><Activity size={15} /> Performance chart builds as trading days are logged.</div>;
+  }
+  const W = 720, H = 170, padX = 6, padY = 14;
+  const n = series.length;
+  const vals = series.map((s) => s.p);
+  const min = Math.min(0, ...vals), max = Math.max(0, ...vals);
+  const range = (max - min) || 1;
+  const X = (i) => padX + (n === 1 ? 0 : (i / (n - 1)) * (W - padX * 2));
+  const Y = (v) => padY + (1 - (v - min) / range) * (H - padY * 2);
+  const line = series.map((s, i) => `${i === 0 ? "M" : "L"}${X(i).toFixed(1)},${Y(s.p).toFixed(1)}`).join(" ");
+  const area = `${line} L${X(n - 1).toFixed(1)},${Y(min).toFixed(1)} L${X(0).toFixed(1)},${Y(min).toFixed(1)} Z`;
+  const last = series[n - 1].p;
+  const up = last >= 0;
+  const col = up ? "var(--green)" : "var(--red)";
+  const zeroY = Y(0);
+  return (
+    <div className="pd-chart">
+      <div className="pd-chart-top">
+        <span className="pd-chart-label"><Activity size={13} /> Cumulative performance · all-time</span>
+        <span className="pd-chart-val" style={{ color: col }}>{up ? "+" : ""}{last.toFixed(2)}%</span>
+      </div>
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="pd-chart-svg">
+        <defs>
+          <linearGradient id="pdgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={col} stopOpacity="0.25" />
+            <stop offset="100%" stopColor={col} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <line x1={padX} y1={zeroY} x2={W - padX} y2={zeroY} stroke="var(--line)" strokeWidth="1" strokeDasharray="4 5" />
+        <path d={area} fill="url(#pdgrad)" />
+        <path d={line} fill="none" stroke={col} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+      <div className="pd-chart-axis"><span>{prettyDate(series[0].d)}</span><span>{prettyDate(series[n - 1].d)}</span></div>
     </div>
   );
 }
@@ -415,37 +586,67 @@ function LoginModal({ onClose }) {
     </div>
   );
 }
+
+function AddPicker({ onPick, onClose }) {
+  const firms = [
+    { id: "bg-instant", make: newInstant, firm: "Blue Guardian", model: "Instant (Standard)", tag: "TradeLocker · trailing locks at initial" },
+    { id: "aqua-pap", make: newAqua, firm: "AquaFunded", model: "Pay-After-Pass (One-Step)", tag: "TradeLocker · trailing resets on payout" },
+    { id: "custom", make: newCustom, firm: "Other firm", model: "Enter rules manually", tag: "Any firm — you set the limits" },
+  ];
+  return (
+    <div className="pd-modal-bg" onClick={onClose}>
+      <div className="pd-login" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 440 }}>
+        <div className="pd-login-head">
+          <span><Plus size={16} /> Add account</span>
+          <button onClick={onClose}><X size={18} /></button>
+        </div>
+        <div className="pd-pick-list">
+          {firms.map((f) => (
+            <button key={f.id} className="pd-pick" onClick={() => onPick(f.make())}>
+              <div className="pd-pick-firm">{f.firm}</div>
+              <div className="pd-pick-model">{f.model}</div>
+              <div className="pd-pick-tag">{f.tag}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Card({ a, onEdit, onDelete }) {
   const p = PROFILES[a.profileId] || PROFILES.custom;
   const r = analyze(a);
   const s = STATUS_STYLE[r.status] || STATUS_STYLE.FUNDED;
   const isBG = r.kind === "instant";
+  const isAqua = r.kind === "aqua";
+  const isFunded = isBG || isAqua;
   const [confirmDel, setConfirmDel] = useState(false);
 
   return (
     <div className="pd-card" style={r.status === "BREACHED" ? { borderColor: "rgba(248,81,73,.4)" } : {}}>
       <div className="pd-card-head">
         <div>
-          <div className="pd-firm">{isBG ? p.firm : (a.firm || "Unnamed")}</div>
-          <div className="pd-label">{a.nickname || (isBG ? `${p.model} · ${money(a.accountSize)}` : `${a.phase} · ${money(a.accountSize)}`)}</div>
+          <div className="pd-firm">{isFunded ? p.firm : (a.firm || "Unnamed")}</div>
+          <div className="pd-label">{a.nickname || (isFunded ? `${p.model} · ${money(a.accountSize)}` : `${a.phase} · ${money(a.accountSize)}`)}</div>
         </div>
         <span className="pd-badge" style={{ color: s.c, background: s.bg }}><s.Icon size={12} strokeWidth={2.5} /> {r.status}</span>
       </div>
 
       <div className="pd-balance">
         <div>
-          <div className="pd-balance-num">{money(isBG ? r.currentBalance : a.currentBalance)}</div>
+          <div className="pd-balance-num">{money(isFunded ? r.currentBalance : a.currentBalance)}</div>
           <div className="pd-pnl" style={{ color: r.pnl >= 0 ? "var(--green)" : "var(--red)" }}>{moneyP(r.pnl)} ({r.pnlPct >= 0 ? "+" : ""}{r.pnlPct.toFixed(2)}%)</div>
         </div>
-        <div className="pd-phase-tag">{isBG ? `peak ${money(r.highestBalance)}` : a.phase}</div>
+        <div className="pd-phase-tag">{isFunded ? `peak ${money(r.highestBalance)}` : a.phase}</div>
       </div>
 
       <Bar
-        label={<>Drawdown cushion {isBG && (r.locked ? <Lock size={10} style={{ verticalAlign: "-1px" }} /> : <span className="pd-trail">trailing</span>)}</>}
+        label={<>Drawdown cushion {isFunded && (r.locked ? <Lock size={10} style={{ verticalAlign: "-1px" }} /> : <span className="pd-trail">trailing</span>)}</>}
         right={r.status === "BREACHED" ? "BREACHED" : `${money(r.cushion)} to ${money(r.floor)}`}
         pct={r.cushionPct} color={r.cushionPct < 25 ? "var(--red)" : r.cushionPct < 50 ? "var(--amber)" : "var(--green)"} danger={r.cushionPct < 25} />
 
-      {!isBG && r.targetPct !== null && (
+      {!isFunded && r.targetPct !== null && (
         <Bar label="Profit target" right={`${money(r.pnl)} / ${money(a.profitTarget)}`} pct={r.targetPct} color="var(--cyan)" />
       )}
 
@@ -460,6 +661,27 @@ function Card({ a, onEdit, onDelete }) {
           <div className="pd-payout" style={{ borderColor: r.eligible ? "rgba(63,185,80,.3)" : "var(--line)" }}>
             <div>
               <div className="pd-payout-k">Payout · {r.effSplit}% split{r.breaches >= 1 && <span className="pd-thresh"> (reduced)</span>}</div>
+              <div className="pd-payout-v" style={{ color: r.eligible ? "var(--green)" : "var(--dim)" }}>
+                {r.eligible ? money(r.yourShare) : "—"}
+                {r.activeCap && <span className="pd-thresh"> · cap {money(r.activeCap)} ({r.cappedLeft} left)</span>}
+              </div>
+            </div>
+            <span className="pd-payout-status" style={{ color: r.eligible ? "var(--green)" : "var(--dim)", background: r.eligible ? "rgba(63,185,80,.12)" : "transparent" }}>
+              {r.eligible ? "ELIGIBLE" : r.status === "BREACHED" ? "LOCKED" : "NOT YET"}
+            </span>
+          </div>
+        </>
+      ) : isAqua ? (
+        <>
+          <div className="pd-rules">
+            <Rule icon={AlertTriangle} k="Daily loss" v={money(r.dailyLoss)} sub="resets 00:00 UTC" />
+            <Rule icon={ShieldAlert} k="Float −2%" v={money(r.floatingLimit)} sub={r.floatingBreach ? "BREACHED" : "hard limit"} warn={r.floatingBreach} />
+            <Rule icon={CalendarDays} k="Qual. days" v={`${r.daysDone}/${r.minDays}`} sub={`≥${money(r.qualDayProfit)}/day`} warn={!r.daysMet} />
+            <Rule icon={Activity} k={`${r.consPct}% rule`} v={r.consChecked ? (r.consOK ? "Pass" : "Blocked") : "—"} sub={`max ${money(r.maxDay)}/day`} warn={r.consChecked && !r.consOK} />
+          </div>
+          <div className="pd-payout" style={{ borderColor: r.eligible ? "rgba(63,185,80,.3)" : "var(--line)" }}>
+            <div>
+              <div className="pd-payout-k">Payout · {r.effSplit}% split · full profit</div>
               <div className="pd-payout-v" style={{ color: r.eligible ? "var(--green)" : "var(--dim)" }}>
                 {r.eligible ? money(r.yourShare) : "—"}
                 {r.activeCap && <span className="pd-thresh"> · cap {money(r.activeCap)} ({r.cappedLeft} left)</span>}
@@ -530,13 +752,14 @@ function Editor({ account, onSave, onClose }) {
   const set = (k, v) => setF((p) => ({ ...p, [k]: v }));
   const num = (k, v) => set(k, v === "" ? 0 : Number(v));
   const isBG = f.profileId === "bg-instant";
+  const isAqua = f.profileId === "aqua-pap";
   const p = PROFILES[f.profileId];
 
   return (
     <div className="pd-modal-bg" onClick={onClose}>
       <div className="pd-modal" onClick={(e) => e.stopPropagation()}>
         <div className="pd-modal-head">
-          <span>{isBG ? "Blue Guardian · Instant" : (account.firm ? "Edit account" : "New account")}</span>
+          <span>{isBG ? "Blue Guardian · Instant" : isAqua ? "AquaFunded · Pay-After-Pass" : (account.firm ? "Edit account" : "New account")}</span>
           <button onClick={onClose}><X size={18} /></button>
         </div>
 
@@ -566,6 +789,32 @@ function Editor({ account, onSave, onClose }) {
               {p.notes.map((n, i) => <div key={i} className="pd-ruleset-item">{n}</div>)}
             </div>
           </>
+        ) : isAqua ? (
+          <>
+            <div className="pd-form">
+              <Field label="Nickname" full><input value={f.nickname} onChange={(e) => set("nickname", e.target.value)} placeholder="My 250K Pay-After-Pass" /></Field>
+              <Field label="Account size">
+                <select value={f.accountSize} onChange={(e) => num("accountSize", e.target.value)}>{SIZES.map((s) => <option key={s} value={s}>{money(s)}</option>)}</select>
+              </Field>
+              <Field label="Platform">
+                <select value={f.platform} onChange={(e) => set("platform", e.target.value)}>{["TradeLocker", "MatchTrader", "MetaTrader 5", "cTrader"].map((x) => <option key={x}>{x}</option>)}</select>
+              </Field>
+              <Field label="Account status">
+                <select value={f.floatingBreach ? 1 : 0} onChange={(e) => set("floatingBreach", e.target.value === "1")}>
+                  <option value={0}>Active</option><option value={1}>−2% floating breach (closed)</option>
+                </select>
+              </Field>
+            </div>
+
+            <LiveSummary f={f} />
+            <DailyLog f={f} setF={setF} />
+            <AquaPayouts f={f} setF={setF} />
+
+            <div className="pd-ruleset">
+              <div className="pd-ruleset-h"><Info size={13} /> Built-in rules for this model</div>
+              {p.notes.map((n, i) => <div key={i} className="pd-ruleset-item">{n}</div>)}
+            </div>
+          </>
         ) : (
           <div className="pd-form">
             <Field label="Prop firm" full><input value={f.firm} onChange={(e) => set("firm", e.target.value)} placeholder="FTMO, Topstep…" /></Field>
@@ -585,7 +834,7 @@ function Editor({ account, onSave, onClose }) {
 
         <div className="pd-modal-foot">
           <button className="pd-ghost" onClick={onClose}>Cancel</button>
-          <button className="pd-add" onClick={() => onSave(f)} disabled={!isBG && !f.firm.trim()}>Save account</button>
+          <button className="pd-add" onClick={() => onSave(f)} disabled={!isBG && !isAqua && !f.firm.trim()}>Save account</button>
         </div>
       </div>
     </div>
@@ -735,7 +984,7 @@ function DailyLog({ f, setF }) {
 
 
 function LiveSummary({ f }) {
-  const r = analyzeInstant(f, PROFILES["bg-instant"]);
+  const r = analyze(f);
   return (
     <div className="pd-live">
       <LiveCell label="Current balance" value={money(r.currentBalance)} />
@@ -816,6 +1065,59 @@ function Payouts({ f, setF }) {
   );
 }
 
+function AquaPayouts({ f, setF }) {
+  const r = analyze(f);
+  const init = f.accountSize;
+  const log = (r.payoutLog || []).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+  const [date, setDate] = useState(todayKey());
+  const [confirm, setConfirm] = useState(false);
+  const profitNow = Math.max(0, r.currentBalance - init);
+
+  const add = () => {
+    setF((p) => ({ ...p, payouts: [...(p.payouts || []), { id: uid(), date }] }));
+    setConfirm(false);
+  };
+  const remove = (d) => setF((p) => ({ ...p, payouts: (p.payouts || []).filter((x) => x.date !== d) }));
+
+  return (
+    <div className="pd-log">
+      <div className="pd-log-head">
+        <div className="pd-log-title"><Banknote size={13} /> Payouts</div>
+        <div className="pd-log-meta">
+          <span className="pd-warn">{log.length} taken</span>
+          {r.activeCap && <span style={{ color: "var(--dim)" }}>cap {money(r.activeCap)} · {r.cappedLeft} left</span>}
+        </div>
+      </div>
+      <div className="pd-pay-add">
+        <input type="date" value={date} max={todayKey()} onChange={(e) => { setDate(e.target.value); setConfirm(false); }} />
+        <button type="button" onClick={() => setConfirm(true)} disabled={profitNow <= 0}><Plus size={15} /> Record payout</button>
+      </div>
+      {confirm && (
+        <div className="pd-pay-confirm">
+          <span><AlertTriangle size={13} /> Record a payout on {prettyDate(date)}? This withdraws your entire profit ({money(profitNow)}) and resets your balance and trailing drawdown to {money(init)}.</span>
+          <div className="pd-pay-confirm-btns">
+            <button type="button" className="pd-pay-yes" onClick={add}>Confirm payout</button>
+            <button type="button" className="pd-pay-no" onClick={() => setConfirm(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+      {log.length > 0 && (
+        <div className="pd-log-list">
+          {log.map((x) => (
+            <div key={x.date} className="pd-log-row">
+              <span className="pd-log-day" style={{ width: "auto" }}>{prettyDate(x.date)}</span>
+              <span className="pd-log-amt" style={{ color: "var(--green)" }}>{money(x.amount)}</span>
+              <span className="pd-log-tag" style={{ color: "var(--dim)", borderColor: "var(--line)" }}>reset to {money(init)}</span>
+              <button type="button" onClick={() => remove(x.date)}><X size={13} /></button>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="pd-log-note">A payout withdraws your entire profit and resets both balance and the trailing drawdown to {money(init)}. The first 2 payouts are capped at {money(10000)} each. Days before a payout dim out and a fresh 14-day period begins.</div>
+    </div>
+  );
+}
+
 const CSS = `
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 .pd-root{--bg:#080b10;--panel:#0e131b;--panel2:#121925;--line:#1d2735;--ink:#e8eef6;--mid:#9fb0c4;--dim:#5d6c80;--green:#3fb950;--red:#f85149;--amber:#d29922;--cyan:#FFFF0B;
@@ -843,6 +1145,12 @@ const CSS = `
 .pd-gate-msg{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--green);font-family:'IBM Plex Mono';font-size:11.5px;margin-bottom:10px;line-height:1.4;}
 .pd-gate-switch{margin-top:14px;color:var(--cyan);font-size:12.5px;cursor:pointer;font-family:'IBM Plex Sans';}
 .pd-gate-switch:hover{text-decoration:underline;}
+.pd-pick-list{display:flex;flex-direction:column;gap:10px;}
+.pd-pick{text-align:left;background:#0a0f16;border:1px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;transition:.15s;color:var(--ink);}
+.pd-pick:hover{border-color:var(--cyan);transform:translateY(-1px);}
+.pd-pick-firm{font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;}
+.pd-pick-model{font-size:13px;color:var(--mid);margin-top:2px;}
+.pd-pick-tag{font-family:'IBM Plex Mono';font-size:10.5px;color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:.5px;}
 .pd-add{display:inline-flex;align-items:center;gap:7px;background:var(--cyan);color:#161600;border:none;font-weight:600;font-family:'IBM Plex Sans';font-size:14px;padding:10px 16px;border-radius:9px;cursor:pointer;transition:.15s;}
 .pd-add:hover{filter:brightness(1.1);transform:translateY(-1px);}.pd-add:disabled{opacity:.4;cursor:not-allowed;transform:none;}
 .pd-ghost{background:transparent;color:var(--mid);border:1px solid var(--line);font-family:'IBM Plex Sans';font-size:14px;padding:10px 16px;border-radius:9px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
@@ -863,6 +1171,13 @@ const CSS = `
 .pd-hero-divider{width:1px;align-self:stretch;background:var(--line);}
 .pd-hero-foot{margin-top:30px;font-family:'IBM Plex Mono';font-size:11px;color:var(--dim);position:relative;}
 .pd-hero-link{color:var(--cyan);cursor:pointer;text-decoration:underline;}
+.pd-chart{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;}
+.pd-chart-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px;}
+.pd-chart-label{display:inline-flex;align-items:center;gap:7px;font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--dim);}
+.pd-chart-val{font-family:'IBM Plex Mono';font-weight:600;font-size:clamp(18px,4vw,26px);letter-spacing:-.5px;}
+.pd-chart-svg{display:block;width:100%;height:150px;}
+.pd-chart-axis{display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:10px;color:var(--dim);margin-top:4px;}
+.pd-chart-empty{margin-top:26px;border-top:1px solid var(--line);padding-top:20px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:'IBM Plex Mono';font-size:12px;color:var(--dim);}
 .pd-login{background:var(--panel);border:1px solid var(--line);border-radius:18px;width:100%;max-width:380px;padding:24px;animation:rise .25s ease both;}
 .pd-login-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;}
 .pd-login-head span{display:inline-flex;align-items:center;gap:8px;}
