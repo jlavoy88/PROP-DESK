@@ -79,19 +79,18 @@ const PROFILES = {
     ],
   },
   "aqua-pap": {
-    id: "aqua-pap", firm: "AquaFunded", model: "Pay-After-Pass (One-Step)",
+    id: "aqua-pap", firm: "AquaFunded", model: "Funded (One-Step)",
     market: "Forex", kind: "aqua", platform: "TradeLocker", split: 100,
     dailyLossPct: 3, maxTrailingPct: 6, floatingLimitPct: 2, evalTargetPct: 3,
     minTradingDays: 5, qualifyingDayPct: 0.5, consistencyPct: () => 15,
-    payoutCap: (size) => (size >= 200000 ? 10000 : null),
-    payoutCapCount: 2, payoutCycleDays: 14,
+    payoutCycleDays: 14,
     notes: [
       "Trailing 6% drawdown — follows your peak and NEVER locks at initial.",
       "After a payout, the entire profit is withdrawn: balance AND trailing reset to your initial balance.",
       "Floating loss past −2% of starting balance = permanent hard breach.",
       "Daily loss limit 3% of initial, reset 00:00 UTC.",
       "Funded: 15% consistency rule, min 5 days (≥0.5% each), payouts every 14 days.",
-      "No trading ±5 min around high-impact news; $100 min withdrawal via Rise.",
+      "No payout cap. No trading ±5 min around high-impact news; $100 min withdrawal via Rise.",
     ],
   },
   "e8-one": {
@@ -390,14 +389,9 @@ function analyzeAqua(a, p) {
     timeMet = todayKey() >= eligibleDate;
   }
 
-  const cap = p.payoutCap(init);
   const taken = payouts.length;
-  const cappedLeft = Math.max(0, p.payoutCapCount - taken);
-  const activeCap = cap && cappedLeft > 0 ? cap : null;
-
   const withdrawable = Math.max(0, currentBalance - init);
-  const payable = activeCap ? Math.min(withdrawable, activeCap) : withdrawable;
-  const yourShare = payable * (p.split / 100);
+  const yourShare = withdrawable * (p.split / 100);
 
   const reasons = [];
   if (ddBreached) reasons.push("Below trailing drawdown floor — breached");
@@ -414,7 +408,7 @@ function analyzeAqua(a, p) {
 
   return { kind: "aqua", currentBalance, highestBalance, pnl, pnlPct, floor, locked: false, cushion, cushionPct, ddBreached,
     dailyLoss, maxLossLimit: init * (p.maxTrailingPct / 100), floatingLimit, floatingBreach, effSplit: p.split, qualDayProfit, daysDone, daysMet, minDays: p.minTradingDays,
-    consPct, maxDay, consChecked, consOK, bigDay, periodProfit, withdrawable, activeCap, cappedLeft, payoutsTaken: taken,
+    consPct, maxDay, consChecked, consOK, bigDay, periodProfit, withdrawable, payoutsTaken: taken,
     eligibleDate, timeMet, yourShare, eligible, status, reasons, payoutLog };
 }
 
@@ -685,7 +679,7 @@ function LoginModal({ onClose }) {
 function AddPicker({ onPick, onClose }) {
   const firms = [
     { id: "bg-instant", make: newInstant, firm: "Blue Guardian", model: "Instant (Standard)", tag: "TradeLocker · trailing locks at initial" },
-    { id: "aqua-pap", make: newAqua, firm: "AquaFunded", model: "Pay-After-Pass (One-Step)", tag: "TradeLocker · trailing resets on payout" },
+    { id: "aqua-pap", make: newAqua, firm: "AquaFunded", model: "Funded (One-Step)", tag: "TradeLocker · trailing resets on payout" },
     { id: "e8-one", make: newE8, firm: "E8 Markets", model: "E8 ONE (1-Step)", tag: "TradeLocker · editable drawdown, trailing locks" },
     { id: "custom", make: newCustom, firm: "Other firm", model: "Enter rules manually", tag: "Any firm — you set the limits" },
   ];
@@ -794,7 +788,6 @@ function Card({ a, onEdit, onDelete }) {
               <div className="pd-payout-k">Payout · {r.effSplit}% split · full profit</div>
               <div className="pd-payout-v" style={{ color: r.eligible ? "var(--green)" : "var(--dim)" }}>
                 {r.eligible ? money(r.yourShare) : "—"}
-                {r.activeCap && <span className="pd-thresh"> · cap {money(r.activeCap)} ({r.cappedLeft} left)</span>}
               </div>
             </div>
             <span className="pd-payout-status" style={{ color: r.eligible ? "var(--green)" : "var(--dim)", background: r.eligible ? "rgba(63,185,80,.12)" : "transparent" }}>
@@ -915,7 +908,7 @@ function Editor({ account, onSave, onClose }) {
     <div className="pd-modal-bg" onClick={onClose}>
       <div className="pd-modal" onClick={(e) => e.stopPropagation()}>
         <div className="pd-modal-head">
-          <span>{isBG ? "Blue Guardian · Instant" : isAqua ? "AquaFunded · Pay-After-Pass" : isE8 ? "E8 Markets · E8 ONE" : (account.firm ? "Edit account" : "New account")}</span>
+          <span>{isBG ? "Blue Guardian · Instant" : isAqua ? "AquaFunded · Funded" : isE8 ? "E8 Markets · E8 ONE" : (account.firm ? "Edit account" : "New account")}</span>
           <button onClick={onClose}><X size={18} /></button>
         </div>
 
@@ -948,7 +941,7 @@ function Editor({ account, onSave, onClose }) {
         ) : isAqua ? (
           <>
             <div className="pd-form">
-              <Field label="Nickname" full><input value={f.nickname} onChange={(e) => set("nickname", e.target.value)} placeholder="My 250K Pay-After-Pass" /></Field>
+              <Field label="Nickname" full><input value={f.nickname} onChange={(e) => set("nickname", e.target.value)} placeholder="My 250K Funded" /></Field>
               <Field label="Account size">
                 <select value={f.accountSize} onChange={(e) => num("accountSize", e.target.value)}>{SIZES.map((s) => <option key={s} value={s}>{money(s)}</option>)}</select>
               </Field>
@@ -1261,10 +1254,7 @@ function AquaPayouts({ f, setF }) {
     <div className="pd-log">
       <div className="pd-log-head">
         <div className="pd-log-title"><Banknote size={13} /> Payouts</div>
-        <div className="pd-log-meta">
-          <span className="pd-warn">{log.length} taken</span>
-          {r.activeCap && <span style={{ color: "var(--dim)" }}>cap {money(r.activeCap)} · {r.cappedLeft} left</span>}
-        </div>
+        <div className="pd-log-meta"><span className="pd-warn">{log.length} taken</span></div>
       </div>
       <div className="pd-pay-add">
         <input type="date" value={date} max={todayKey()} onChange={(e) => { setDate(e.target.value); setConfirm(false); }} />
@@ -1291,7 +1281,7 @@ function AquaPayouts({ f, setF }) {
           ))}
         </div>
       )}
-      <div className="pd-log-note">A payout withdraws your entire profit and resets both balance and the trailing drawdown to {money(init)}. The first 2 payouts are capped at {money(10000)} each. Days before a payout dim out and a fresh 14-day period begins.</div>
+      <div className="pd-log-note">A payout withdraws your entire profit and resets both balance and the trailing drawdown to {money(init)}. Days before a payout dim out and a fresh 14-day period begins.</div>
     </div>
   );
 }
