@@ -718,7 +718,7 @@ function Card({ a, onEdit, onDelete }) {
   const maxUsed = clamp((r.maxLossLimit || 0) - maxRoom, 0, r.maxLossLimit || 0);
   const maxPctUsed = r.maxLossLimit ? clamp((maxUsed / r.maxLossLimit) * 100, 0, 100) : 0;
   const profitAmt = Math.max(0, r.pnl || 0);
-  const profitPct = r.maxLossLimit ? clamp((profitAmt / r.maxLossLimit) * 100, 0, 100) : 0;
+  const profitPct = a.accountSize ? clamp((profitAmt / a.accountSize) * 100, 0, 100) : 0;
 
   return (
     <div className="pd-card" style={r.status === "BREACHED" ? { borderColor: "rgba(248,81,73,.4)" } : {}}>
@@ -741,7 +741,7 @@ function Card({ a, onEdit, onDelete }) {
       {isFunded ? (
         <>
           <div className="pd-gauges">
-            <Gauge label="Profit" pct={profitPct} usedAmt={profitAmt} totalAmt={r.maxLossLimit} tone="profit" />
+            <Gauge label="Profit" pct={profitPct} usedAmt={profitAmt} totalAmt={a.accountSize} tone="profit" />
             <Gauge label="Max Loss" pct={r.status === "BREACHED" ? 100 : maxPctUsed} usedAmt={maxUsed} totalAmt={r.maxLossLimit} />
           </div>
           <div className="pd-gauge-foot">Floor {money(r.floor)} · {r.locked ? "locked at initial" : "trailing"} · {money(maxRoom)} room left before breach</div>
