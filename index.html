@@ -717,6 +717,8 @@ function Card({ a, onEdit, onDelete }) {
   const maxRoom = Math.max(0, r.cushion || 0);
   const maxUsed = clamp((r.maxLossLimit || 0) - maxRoom, 0, r.maxLossLimit || 0);
   const maxPctUsed = r.maxLossLimit ? clamp((maxUsed / r.maxLossLimit) * 100, 0, 100) : 0;
+  const profitAmt = Math.max(0, r.pnl || 0);
+  const profitPct = r.maxLossLimit ? clamp((profitAmt / r.maxLossLimit) * 100, 0, 100) : 0;
 
   return (
     <div className="pd-card" style={r.status === "BREACHED" ? { borderColor: "rgba(248,81,73,.4)" } : {}}>
@@ -739,6 +741,7 @@ function Card({ a, onEdit, onDelete }) {
       {isFunded ? (
         <>
           <div className="pd-gauges">
+            <Gauge label="Profit" pct={profitPct} usedAmt={profitAmt} totalAmt={r.maxLossLimit} tone="profit" />
             <Gauge label="Max Loss" pct={r.status === "BREACHED" ? 100 : maxPctUsed} usedAmt={maxUsed} totalAmt={r.maxLossLimit} />
           </div>
           <div className="pd-gauge-foot">Floor {money(r.floor)} · {r.locked ? "locked at initial" : "trailing"} · {money(maxRoom)} room left before breach</div>
@@ -851,11 +854,11 @@ function Card({ a, onEdit, onDelete }) {
   );
 }
 
-function Gauge({ label, pct, usedAmt, totalAmt }) {
+function Gauge({ label, pct, usedAmt, totalAmt, tone }) {
   const R = 54, C = 2 * Math.PI * R;
   const p = clamp(pct, 0, 100);
   const off = C * (1 - p / 100);
-  const col = p >= 80 ? "var(--red)" : p >= 50 ? "var(--amber)" : "var(--green)";
+  const col = tone === "profit" ? "var(--green)" : (p >= 80 ? "var(--red)" : p >= 50 ? "var(--amber)" : "var(--green)");
   return (
     <div className="pd-gauge">
       <div className="pd-gauge-label">{label}</div>
@@ -1427,8 +1430,8 @@ const CSS = `
 .pd-bar-top{display:flex;justify-content:space-between;font-family:'IBM Plex Mono';font-size:11px;color:var(--mid);gap:8px;}
 .pd-trail{color:var(--cyan);font-size:9px;text-transform:uppercase;letter-spacing:.5px;border:1px solid rgba(255,255,11,.3);padding:1px 4px;border-radius:4px;margin-left:4px;}
 .pd-bar-track{height:7px;background:#0a0f16;border-radius:99px;overflow:hidden;border:1px solid var(--line);}
-.pd-gauges{display:flex;justify-content:center;gap:10px;margin:2px 0 10px;}
-.pd-gauge{background:#0a0f16;border:1px solid var(--line);border-radius:12px;padding:14px 22px 12px;text-align:center;min-width:160px;}
+.pd-gauges{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:2px 0 10px;}
+.pd-gauge{background:#0a0f16;border:1px solid var(--line);border-radius:12px;padding:14px 8px 12px;text-align:center;}
 .pd-gauge-label{font-family:'IBM Plex Mono';font-size:9.5px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:8px;}
 .pd-gauge-ring{position:relative;width:88px;height:88px;margin:0 auto;}
 .pd-gauge-ring svg{width:100%;height:100%;display:block;}
